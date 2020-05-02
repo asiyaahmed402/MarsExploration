@@ -1,44 +1,119 @@
 package edu.bu.met.cs665;
+import edu.bu.met.cs665.GalacticGasStations.*;
+import edu.bu.met.cs665.MarsPioneerParts.*;
+import edu.bu.met.cs665.NASABranch.*;
+import edu.bu.met.cs665.SpaceExploration.*;
+import java.time.*;
 
-import edu.bu.met.cs665.example1.Person;
-import org.apache.log4j.Logger;
-// import org.apache.log4j.PropertyConfigurator;
-
+/**
+ * @Name: Asiya Ahmed
+ *
+ *
+ * */
 public class Main {
 
-  private static Logger logger = Logger.getLogger(Main.class);
 
-
-  /**
-   * A main method to run examples.
-   *
-   * @param args not used
-   */
   public static void main(String[] args) {
 
-    // This configuration is for setting up the log4j properties file.
-    // It is better to set this using java program arguments.
-    // PropertyConfigurator.configure("log4j.properties");
+    //Define Mars Pioneer Xi specs
+    final long id = 1L;
+    final String modelName = "Xeyron Xi";
+    final LocalDate currentDate = LocalDate.of(2010, Month.APRIL, 1);
+    final int refuelingRate = 1000;
+    final int speed = 2410;
+    final int range = 1600;
+    final int engineThrust = 35000;
+    final int weight = 38000;
 
-    // Let us create an object of the Main class.
-    Main m = new Main();
+    // Defining the shuttle parts
+    CommandCenter commandCenter = new CommandCenter("command center");
+    commandCenter.setLifespan(10);
+    commandCenter.setStartDate(LocalDate.of(2000, Month.APRIL, 1));
 
-    logger.info(m.doIt());
+    ElectricalPower electricalPower = new ElectricalPower("electrical power");
+    electricalPower.setLifespan(15);
+    electricalPower.setStartDate(LocalDate.of(2010, Month.APRIL, 1));
 
-    logger.trace("Trace Message!");
-    logger.debug("Debug Message!");
-    logger.info("Info Message!");
-    logger.warn("Warn Message!");
-    logger.error("Error Message!");
-    logger.fatal("Fatal Message!");
+    NavigationSystem navigationSystem = new NavigationSystem("navigation system");
+    navigationSystem.setLifespan(18);
+    navigationSystem.setStartDate(LocalDate.of(2020, Month.APRIL, 1));
+
+    ThermalSystem thermalSystem = new ThermalSystem("thermal system");
+    thermalSystem.setLifespan(20);
+    thermalSystem.setStartDate(LocalDate.of(2004, Month.APRIL, 1));;
+
+
+
+   //builder
+    System.out.println("\n--------------------------------------------------------------------");
+    System.out.println("BUILDING MARS PIONEER XI w/ Specifications:");
+    System.out.println("--------------------------------------------------------------------");
+    // Building shuttle with specifications and parts
+    ShuttleManufacturer atlasV = new ShuttleManufacturer.Builder(id)
+            .withModelName(modelName)
+            .withDate(currentDate)
+            .withCommandCenter(commandCenter)
+            .withElectricalPower(electricalPower)
+            .withNavigationSystem(navigationSystem)
+            .withThermalSystem(thermalSystem)
+            .withRefuelRate(refuelingRate)
+            .withSpeed(speed)
+            .withRange(range)
+            .withEngineThrust(engineThrust)
+            .withWeight(weight)
+            .build();
+
+    // Printing the inventory and specs
+    atlasV.printSpecs();
+    atlasV.getInventory().print();
+
+
+    System.out.println("\n--------------------------------------------------------------------");
+    System.out.println("MARS PIONEER XI HEALTH STATUS & MAINTENANCE");
+    System.out.println("--------------------------------------------------------------------");
+    // Printing status
+    atlasV.printStatus();
+    atlasV.performMaintenance();
+    atlasV.printStatus();
+
+
+
+    System.out.println("\n--------------------------------------------------------------------");
+    System.out.println("REFUEL AT OUTER SPACE GAS STATIONS");
+    System.out.println("--------------------------------------------------------------------");
+    //DEFAULT: DEIMOS STATION
+    atlasV.refuel();
+    atlasV.setGgsLocation(new DeimosStation());
+    atlasV.refuel();
+
+
+
+    System.out.println("\n--------------------------------------------------------------------");
+    System.out.println("ASSIGNMENT OF MISSION & TRACKING ");
+    System.out.println("--------------------------------------------------------------------");
+    //FIELD CENTERS
+    CanberraDeepSpace canberra = new CanberraDeepSpace("CANBERRA DEEP SPACE CENTER");
+    GoddardFlightCenter goddard = new GoddardFlightCenter("GODDARD FLIGHT CENTER");
+    atlasV.addFieldCenter(canberra);
+    atlasV.addFieldCenter(goddard);
+
+    // Creating exploration type
+    Exploration algaeBioFuel = new Exploration("AlgaeBiofuel");
+    algaeBioFuel.setTakeoffBase("Kennedy Space Center");
+    algaeBioFuel.setLandingBase("Vandenberg Air Force Base");
+
+
+    atlasV.setMission(algaeBioFuel);
+    atlasV.notifyFieldCenters();
+  }
+
+
+
 
   }
 
 
 
-  private String doIt() {
-    Person student = new Person("John", "Doe");
-    return student.getLastName() + ',' + student.getLastName();
-  }
 
-}
+
+
