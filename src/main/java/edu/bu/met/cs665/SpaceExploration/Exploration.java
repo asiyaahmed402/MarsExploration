@@ -11,7 +11,7 @@ public class Exploration {
     private String landingBase;
 
     // Based on mission name,
-    // returns appropriate Mission object that contains its objective description
+    // returns appropriate Mission object that contains its  description
     public Exploration(String typeName) {
         this.typeName = typeName;
         switch (typeName) {
